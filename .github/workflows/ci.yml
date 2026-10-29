@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Python ${{ matrix.python-version }} · ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: 确认零第三方依赖
+        run: python -c "import sys, pathlib; bad=[p for p in pathlib.Path('src/harscope').glob('*.py') if any(x in p.read_text(encoding='utf-8') for x in ('import numpy','import requests','import pydantic','import click','import rich'))]; sys.exit(1) if bad else print('zero third-party imports ✅')"
+        shell: bash
+
+      - name: 运行单元测试
+        run: python -m unittest discover -s tests -v
+
+      - name: CLI 冒烟测试
+        run: python -m harscope --version
+        env:
+          PYTHONPATH: src
+
+      - name: 端到端：分析示例 HAR
+        run: |
+          python -m harscope summary examples/sample.har
+          python -m harscope waterfall examples/sample.har --top 8
+          python -m harscope security examples/sample.har
+          python -m harscope export examples/sample.har --format markdown -o out.md --force
+          python -m harscope export examples/sample.har --format html -o out.html --force
+        env:
+          PYTHONPATH: src
+        shell: bash
+
+      - name: CI 门禁自测
+        run: python -m harscope ci examples/sample.har --max-requests 50 --require-https || true
+        env:
+          PYTHONPATH: src
+        shell: bash
+
+  build:
+    name: 构建分发产物
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 安装构建工具
+        run: python -m pip install --upgrade pip build
+      - name: 构建 wheel 与 sdist
+        run: python -m build
+      - name: 构建 zipapp 单文件产物
+        run: make zipapp
+      - name: 上传产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: harscope-dist
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+            dist/*.pyz
