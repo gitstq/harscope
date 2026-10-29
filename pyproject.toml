@@ -1,0 +1,68 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "harscope"
+version = "1.0.0"
+description = "零依赖 HTTP Archive (HAR) 分析与性能取证工作台：瀑布图、体积归因、重复请求与安全审计，单文件离线可用"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "HarScope Contributors" }]
+maintainers = [{ name = "HarScope Contributors" }]
+keywords = [
+    "har",
+    "http-archive",
+    "performance",
+    "waterfall",
+    "cli",
+    "network",
+    "security",
+    "zero-dependency",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: System :: Networking :: Monitoring",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+# 仅供开发使用：单元测试本身只依赖标准库 unittest，
+# 这两个包是可选的覆盖率/多版本测试辅助工具，不安装也能跑测试。
+dev = ["coverage>=7.0", "pytest>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/gitstq/harscope"
+Repository = "https://github.com/gitstq/harscope"
+Issues = "https://github.com/gitstq/harscope/issues"
+Changelog = "https://github.com/gitstq/harscope/blob/main/CHANGELOG.md"
+
+[project.scripts]
+harscope = "harscope.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+packages = ["harscope"]
+zip-safe = false
+include-package-data = true
+
+[tool.setuptools.package-data]
+harscope = ["py.typed", "*.md", "LICENSE"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["tests/*", "scripts/*"]

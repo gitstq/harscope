@@ -1,0 +1,11 @@
+HarScope —— 零依赖 HAR 分析工作台 · 运行时依赖清单
+
+本项目承诺「零第三方依赖」：运行 HarScope 只需要 Python 3.8+ 自带的
+标准库（json / csv / http.client / ssl / html.parser / dataclasses 等）。
+
+因此这里不列出任何 pip 包。如果你在离线/内网环境中部署，
+把 src/ 目录整个拷贝过去即可直接使用：
+
+    PYTHONPATH=src python -m harscope summary trace.har
+
+如需开发环境的可选工具，见 requirements-dev.txt。
