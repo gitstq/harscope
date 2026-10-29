@@ -570,7 +570,7 @@ Component weighting reads much better: **transport 30 + headers 30 + findings 40
 
 | Version | Planned | Status |
 | --- | --- | --- |
-| **v1.0.0** | 15 commands, 5 export targets, built-in recorder, 126 unit tests, trilingual docs | ✅ Released |
+| **v1.0.0** | 15 commands, 5 export targets, built-in recorder, 129 unit tests, trilingual docs | ✅ Released |
 | v1.1.0 | HAR diffing (`harscope diff A.har B.har`) and regression trend tracking | 📋 Planned |
 | v1.2.0 | Approximate Core Web Vitals (LCP / FID / CLS inferred from HAR) | 📋 Planned |
 | v1.3.0 | JSON-Schema-level HAR validation report, `--strict` mode | 💡 Exploring |
@@ -637,7 +637,7 @@ bash scripts/run.sh summary examples/sample.har
 ```bash
 make install         # Install into the current environment
 make dev             # Editable install
-make test            # Run all 126 unit tests
+make test            # Run all 129 unit tests
 make test-net        # Include the network recorder tests
 make smoke           # CLI smoke test
 make clean           # Remove build artifacts
@@ -671,7 +671,7 @@ harscope/
 │   ├── cli.py            # CLI with 15 subcommands
 │   ├── exceptions.py     # Exception hierarchy
 │   └── py.typed          # PEP 561 type marker
-├── tests/                # 126 unit tests using only stdlib unittest
+├── tests/                # 129 unit tests using only stdlib unittest
 ├── examples/sample.har   # Sample capture file
 ├── scripts/              # One-shot run / build / test scripts
 ├── .github/workflows/    # CI across 3 OSes × 6 Python versions

@@ -570,7 +570,7 @@ HarScope 的折衷是：**解析時盡量給值，但同時把降級行為明明
 
 | 版本 | 預計內容 | 狀態 |
 | --- | --- | --- |
-| **v1.0.0** | 15 個指令、5 類匯出、內建錄製器、126 個單元測試、三語文件 | ✅ 已發佈 |
+| **v1.0.0** | 15 個指令、5 類匯出、內建錄製器、129 個單元測試、三語文件 | ✅ 已發佈 |
 | v1.1.0 | HAR 檔案差異比對（`harscope diff A.har B.har`）、指標回歸趨勢 | 📋 規劃中 |
 | v1.2.0 | Core Web Vitals 近似估算（從 HAR 側推算 LCP / FID / CLS） | 📋 規劃中 |
 | v1.3.0 | JSON Schema 層級的 HAR 校驗報告、`--strict` 嚴格模式 | 💡 構思中 |
@@ -637,7 +637,7 @@ bash scripts/run.sh summary examples/sample.har
 ```bash
 make install         # 安裝到當前環境
 make dev             # 可編輯模式安裝
-make test            # 執行 126 個單元測試
+make test            # 執行 129 個單元測試
 make test-net        # 含網路錄製器的測試
 make smoke           # CLI 冒煙測試
 make clean           # 清除建置產物
@@ -671,7 +671,7 @@ harscope/
 │   ├── cli.py            # 命令列：15 個子指令
 │   ├── exceptions.py     # 例外層級
 │   └── py.typed          # PEP 561 型別標記
-├── tests/                # 126 個單元測試（僅使用標準函式庫 unittest）
+├── tests/                # 129 個單元測試（僅使用標準函式庫 unittest）
 ├── examples/sample.har   # 範例 HAR 檔案
 ├── scripts/              # run / build / test 一鍵腳本
 ├── .github/workflows/    # CI（3 種系統 × 6 個 Python 版本）
