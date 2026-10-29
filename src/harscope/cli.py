@@ -98,6 +98,23 @@ def build_parser() -> argparse.ArgumentParser:
         sub = subparsers.add_parser(name, help=help_text, description=help_text)
         if har_positional:
             sub.add_argument("har", help="HAR 文件路径（`-` 表示从标准输入读取）")
+        # 通用开关在两个位置都可用：既能写成 `harscope --json summary x.har`，
+        # 也能写成 `harscope summary x.har --json`。用独立 dest 避免子解析器
+        # 的默认值覆盖掉父解析器已经读到 True 的值。
+        sub.add_argument(
+            "--json",
+            dest="as_json_sub",
+            action="store_true",
+            default=False,
+            help="以 JSON 输出结果，便于二次处理",
+        )
+        sub.add_argument(
+            "--no-color",
+            dest="no_color_sub",
+            action="store_true",
+            default=False,
+            help="关闭 ANSI 颜色输出（等价于设置 NO_COLOR=1）",
+        )
         return sub
 
     summary = attach("summary", help_text="会话总览：规模、体积、耗时、状态码分布")
@@ -955,7 +972,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     """
     args = build_parser().parse_args(argv)
 
-    if args.no_color:
+    # 合并「放在最前面」与「放在子命令后面」两种写法的通用开关。
+    args.as_json = bool(getattr(args, "as_json", False)) or bool(
+        getattr(args, "as_json_sub", False)
+    )
+    if bool(getattr(args, "no_color", False)) or bool(
+        getattr(args, "no_color_sub", False)
+    ):
         os.environ["NO_COLOR"] = "1"
         from .render import PALETTE
 

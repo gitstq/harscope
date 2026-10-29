@@ -115,6 +115,27 @@ class TestSummaryCommands(CliTestCase):
         self.assertEqual(code, EXIT_OK)
 
 
+class TestGlobalFlagsAfterSubcommand(CliTestCase):
+    """通用开关放在子命令之后也必须生效。"""
+
+    def test_json_after_subcommand(self) -> None:
+        for command in ("summary", "domains", "status", "pages", "dupes", "security"):
+            with self.subTest(command=command):
+                code, output = self.run_cli("--no-color", command, self.sample, "--json")
+                self.assertEqual(code, EXIT_OK)
+                json.loads(output)
+
+    def test_json_before_subcommand(self) -> None:
+        code, output = self.run_cli("--no-color", "--json", "summary", self.sample)
+        self.assertEqual(code, EXIT_OK)
+        self.assertEqual(json.loads(output)["requests"], 14)
+
+    def test_no_color_after_subcommand(self) -> None:
+        code, output = self.run_cli("summary", self.sample, "--no-color")
+        self.assertEqual(code, EXIT_OK)
+        self.assertNotIn("\x1b[", output)
+
+
 class TestExports(CliTestCase):
     """导出命令落盘。"""
 
