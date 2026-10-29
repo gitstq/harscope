@@ -1,0 +1,8 @@
+"""HarScope —— 零依赖 HTTP Archive (HAR) 分析与性能取证工作台。
+
+这是一个 PEP 561 标记文件，声明包内自带类型注解。
+"""
+
+from __future__ import annotations
+
+__all__: list = []
